@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ai-mcp-server
+  ai:
+    mcp:
+      server:
+        enable: true
+        name: mysqlQuery-mcp-server
