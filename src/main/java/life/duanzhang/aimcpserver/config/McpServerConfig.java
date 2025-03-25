@@ -2,6 +2,7 @@ package life.duanzhang.aimcpserver.config;
 
 import io.modelcontextprotocol.server.McpServerFeatures;
 import io.modelcontextprotocol.spec.McpSchema;
+import life.duanzhang.aimcpserver.service.DBService;
 import life.duanzhang.aimcpserver.service.FileService;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
@@ -16,6 +17,11 @@ public class McpServerConfig {
     @Bean
     public ToolCallbackProvider fileTools(FileService fileService) {
         return MethodToolCallbackProvider.builder().toolObjects(fileService).build();
+    }
+
+    @Bean
+    public ToolCallbackProvider dbTools(DBService dbService) {
+        return MethodToolCallbackProvider.builder().toolObjects(dbService).build();
     }
 
     @Bean
