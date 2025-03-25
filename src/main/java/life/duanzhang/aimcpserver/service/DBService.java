@@ -1,16 +1,23 @@
 package life.duanzhang.aimcpserver.service;
 
+import com.google.common.collect.Sets;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
+import life.duanzhang.aimcpserver.model.TableRelationship;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -35,7 +42,7 @@ public class DBService {
         return schemas;
     }
 
-    @Tool(description = "获取架构内的所有表名")
+    @Tool(description = "根据架构名称获取架构内的所有表信息")
     public List<Map<String, Object>> getAllTables(String schema) {
         List<Map<String, Object>> tables = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
@@ -94,5 +101,62 @@ public class DBService {
             log.error(e.getMessage());
         }
         return resultList;
+    }
+
+    @Tool(description = "保存表与表之间的关联")
+    public void saveTableLink(String sourceTable, String sourceColumn,String targetTable, String targetColumn) {
+        TableRelationship tableRelationship = new TableRelationship();
+//        tableRelationship.setSourceSchema(sourceSchema);
+        tableRelationship.setSourceTable(sourceTable);
+        tableRelationship.setSourceColumn(sourceColumn);
+//        tableRelationship.setTargetSchema(targetSchema);
+        tableRelationship.setTargetTable(targetTable);
+        tableRelationship.setTargetColumn(targetColumn);
+        appendToJsonFile("src/main/resources/db/table_relationship.json", tableRelationship);
+    }
+
+    @Tool(description = "获取表与表之间的关联")
+    public Set<TableRelationship> getTableLink() {
+        String filePath = "src/main/resources/db/table_relationship.json";
+        File file = new File(filePath);
+        Set<TableRelationship> existingData = Sets.newHashSet();
+        if (!file.exists()) {
+            return existingData;
+        }
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+            if (!content.isEmpty()) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                existingData = gson.fromJson(content, new TypeToken<Set<TableRelationship>>() {
+                }.getType());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return existingData;
+    }
+
+    public static void appendToJsonFile(String filePath, TableRelationship data) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Set<TableRelationship> existingData = Sets.newHashSet();
+        File file = new File(filePath);
+        if (file.exists()) {
+            try {
+                String content = new String(Files.readAllBytes(Paths.get(filePath)));
+                if (!content.isEmpty()) {
+                    existingData = gson.fromJson(content, new TypeToken<Set<TableRelationship>>() {
+                    }.getType());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        existingData.add(data);
+        String json = gson.toJson(existingData);
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

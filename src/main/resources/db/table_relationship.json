@@ -1,0 +1,44 @@
+[
+  {
+    "sourceTable": "mall_seek_leads",
+    "sourceColumn": "corp_leads_id",
+    "targetTable": "mall_seek_corp_leads",
+    "targetColumn": "corp_leads_id"
+  },
+  {
+    "sourceTable": "mall_chat",
+    "sourceColumn": "channel_id",
+    "targetTable": "mall_chat_channel",
+    "targetColumn": "channel_id"
+  },
+  {
+    "sourceTable": "mall_seek_chat",
+    "sourceColumn": "channel_id",
+    "targetTable": "mall_seek_chat_channel",
+    "targetColumn": "channel_id"
+  },
+  {
+    "sourceTable": "mall_seek_chat_channel",
+    "sourceColumn": "channel_id",
+    "targetTable": "mall_seek_chat_key_information",
+    "targetColumn": "channel_id"
+  },
+  {
+    "sourceTable": "mall_seek_leads",
+    "sourceColumn": "corp_leads_id",
+    "targetTable": "mall_seek_corp_leads",
+    "targetColumn": "corp_leads_id"
+  },
+  {
+    "sourceTable": "mall_qw_corp",
+    "sourceColumn": "corp_id",
+    "targetTable": "mall_customer",
+    "targetColumn": "owner_company_id"
+  },
+  {
+    "sourceTable": "mall_qw_corp",
+    "sourceColumn": "corp_id",
+    "targetTable": "mall_customer",
+    "targetColumn": "owner_company_id"
+  }
+]
