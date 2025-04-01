@@ -1,5 +1,3 @@
-server:
-  port: 8888
 spring:
   application:
     name: ai-mcp-server
@@ -8,3 +6,4 @@ spring:
       server:
         enable: true
         name: mysqlQuery-mcp-server
+        type: ASYNC
