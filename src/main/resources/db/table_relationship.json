@@ -40,5 +40,23 @@
     "sourceColumn": "corp_id",
     "targetTable": "mall_customer",
     "targetColumn": "owner_company_id"
+  },
+  {
+    "sourceTable": "mall_seek_customer",
+    "sourceColumn": "phone_number",
+    "targetTable": "mall_mobile_empty_check",
+    "targetColumn": "mobile"
+  },
+  {
+    "sourceTable": "mall_seek_chat",
+    "sourceColumn": "channel_id",
+    "targetTable": "mall_seek_chat_channel",
+    "targetColumn": "channel_id"
+  },
+  {
+    "sourceTable": "mall_seek_chat",
+    "sourceColumn": "to_id",
+    "targetTable": "mall_seek_account",
+    "targetColumn": "open_id"
   }
 ]
