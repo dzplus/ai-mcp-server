@@ -4,6 +4,12 @@ spring:
   ai:
     mcp:
       server:
-        enable: true
+        enabled: true
         name: mysqlQuery-mcp-server
-        type: ASYNC
+#        prompt-change-notification: true
+#        resource-change-notification: true
+#        sse-message-endpoint: /mcp/message
+#        stdio: false
+#        tool-change-notification: false
+        type: SYNC
+#        version: 1.0.0
