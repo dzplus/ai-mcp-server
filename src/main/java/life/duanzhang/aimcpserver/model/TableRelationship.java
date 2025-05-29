@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -18,16 +19,25 @@ public class TableRelationship {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TableRelationship tableRelationship = (TableRelationship) o;
-        String collect = Sets.newHashSet( tableRelationship.getSourceTable(), tableRelationship.getSourceColumn(),  tableRelationship.getTargetTable(), tableRelationship.getTargetColumn())
-                .stream()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.joining(","));
-        String thisCollect = Sets.newHashSet( this.getSourceTable(), this.getSourceColumn(), this.getTargetTable(), this.getTargetColumn())
-                .stream()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.joining(","));
-        return Objects.equals(thisCollect, collect);
+        TableRelationship that = (TableRelationship) o;
+
+        return getRelationshipString(this).equals(getRelationshipString(that));
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRelationshipString(this));
+    }
+
+    private String getRelationshipString(TableRelationship relationship) {
+        Set<String> values = Sets.newHashSet(
+                relationship.getSourceTable(),
+                relationship.getSourceColumn(),
+                relationship.getTargetTable(),
+                relationship.getTargetColumn()
+        );
+        return values.stream()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.joining(","));
+    }
 }

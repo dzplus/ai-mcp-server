@@ -6,10 +6,10 @@ spring:
       server:
         enabled: true
         name: mysqlQuery-mcp-server
-#        prompt-change-notification: true
-#        resource-change-notification: true
+        prompt-change-notification: true
+        resource-change-notification: true
 #        sse-message-endpoint: /mcp/message
-#        stdio: false
-#        tool-change-notification: false
+        stdio: false
+        tool-change-notification: false
         type: SYNC
-#        version: 1.0.0
+        version: 1.0.0
